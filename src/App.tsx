@@ -1,8 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from './pages/Home/Home'
-import SignIn from './pages/SignIn/SignIn'
-import SignUp from './pages/SignUp/SignUp'
 import { Layout } from './pages/components/Layout'
+import { HOME_PATH } from './core/constants/routes'
 
 function App() {
     return (
@@ -10,9 +9,7 @@ function App() {
             <BrowserRouter>
                 <Layout>
                     <Routes>
-                        <Route path='/' element={<Home />} />
-                        <Route path='/login' element={<SignIn />} />
-                        <Route path='/register' element={<SignUp />} />
+                        <Route path={HOME_PATH} element={<Home />} />
                     </Routes>
                 </Layout>
             </BrowserRouter>
