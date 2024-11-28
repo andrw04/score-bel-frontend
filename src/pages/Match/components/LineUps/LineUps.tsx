@@ -44,12 +44,12 @@ const LineUps: FC<PropsType> = ({ matchId, homeTeamName, awayTeamName }) => {
                 <Typography variant="h5">Стартовый состав</Typography>
                 <Stack direction="row" gap="20px">
                     <Stack width="100%" gap="20px">
-                        {homeTeam.start.map((player, index) => (
+                        {homeTeam?.start?.map((player, index) => (
                             <PlayerItem player={player} key={index} />
                         ))}
                     </Stack>
                     <Stack width="100%" gap="20px">
-                        {awayTeam.start.map((player, index) => (
+                        {awayTeam?.start?.map((player, index) => (
                             <PlayerItem player={player} key={index} />
                         ))}
                     </Stack>
@@ -57,12 +57,12 @@ const LineUps: FC<PropsType> = ({ matchId, homeTeamName, awayTeamName }) => {
                 <Typography variant="h5">Игроки в запасе</Typography>
                 <Stack direction="row" gap="20px">
                     <Stack width="100%" gap="20px">
-                        {homeTeam.bench.map((player, index) => (
+                        {homeTeam?.bench?.map((player, index) => (
                             <PlayerItem player={player} key={index} />
                         ))}
                     </Stack>
                     <Stack width="100%" gap="20px">
-                        {awayTeam.bench.map((player, index) => (
+                        {awayTeam?.bench?.map((player, index) => (
                             <PlayerItem player={player} key={index} />
                         ))}
                     </Stack>

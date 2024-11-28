@@ -1,6 +1,4 @@
 import {
-    Card,
-    CardContent,
     Grid2,
     IconButton,
     Paper,
@@ -9,11 +7,11 @@ import {
 import { Match } from '../../../core/types/matchesTypes'
 import TeamView from './TeamView'
 import Result from './Result'
-import { format } from 'date-fns/format'
 import { ru } from 'date-fns/locale'
 import { Team } from '../../../core/types/teamTypes'
 import { Dictionary } from 'lodash'
 import { useNavigate } from 'react-router-dom'
+import { format } from 'date-fns'
 
 type PropsType = {
     match: Match
@@ -22,14 +20,20 @@ type PropsType = {
 }
 
 export const MatchCard: React.FC<PropsType> = ({ match, teams, onClick }) => {
-    const formattedTime = format(match.startTime, 'dd MMM HH:mm', {
+    const formattedTime = format(new Date(match.startTime), 'dd MMM HH:mm', {
         locale: ru,
     })
 
     const navigate = useNavigate()
 
     return (
-        <IconButton disableRipple sx={{width: '100%'}} onClick={() => { navigate(`/matches/${match.id}`)}}>
+        <IconButton
+            disableRipple
+            sx={{ width: '100%' }}
+            onClick={() => {
+                navigate(`/matches/${match.id}`)
+            }}
+        >
             <Paper
                 elevation={2}
                 sx={{
@@ -51,7 +55,9 @@ export const MatchCard: React.FC<PropsType> = ({ match, teams, onClick }) => {
                         <Result
                             homeTeamScore={match.homeTeamGoals}
                             awayTeamScore={match.awayTeamGoals}
+                            isStarted={Boolean(match.fullTime)}
                         />
+
                         <Typography>{formattedTime}</Typography>
                     </Grid2>
                     <TeamView team={teams[match.awayTeam]?.name} />

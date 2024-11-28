@@ -31,6 +31,10 @@ const Summary: FC<PropsType> = ({ matchId, homeTeamName, awayTeamName }) => {
     }, [data])
 
     const events = useMemo(() => {
+        if (!homeTeam || !awayTeam) {
+            return []
+        }
+
         const bothTeamEvents = homeTeam.reduce((result, item1) => {
             const match = awayTeam.find(
                 (item2) => item1.minute === item2.minute

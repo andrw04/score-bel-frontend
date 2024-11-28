@@ -1,18 +1,13 @@
 import { Match } from '../../../core/types/matchesTypes'
 import { Dictionary, keyBy } from 'lodash'
 import { useGetTournamentsQuery } from '../../../core/api/tournamentsApi'
-import { FC, useMemo } from 'react'
+import { FC, useMemo, useState } from 'react'
 import TournamentListItem from './LeagueComponent'
-import { Grid2, Paper } from '@mui/material'
+import { Grid2, Paper, TextField } from '@mui/material'
 import { useGetTeamsQuery } from '../../../core/api/teamsApi'
 
-type Tournament = {
-    name: string
-    matches: Match[]
-}
-
 type TournamentProps = {
-    leagues: Dictionary<Match[]>
+    leagues?: Dictionary<Match[]>
 }
 
 const FootballLeagues: FC<TournamentProps> = ({ leagues }) => {
@@ -26,7 +21,7 @@ const FootballLeagues: FC<TournamentProps> = ({ leagues }) => {
         return rawTournaments.results.map((result) => result)
     }, [rawTournaments])
 
-    const {data: rawTeams} = useGetTeamsQuery()
+    const { data: rawTeams } = useGetTeamsQuery()
 
     const teams = useMemo(() => {
         if (!rawTeams) {
@@ -38,8 +33,8 @@ const FootballLeagues: FC<TournamentProps> = ({ leagues }) => {
 
     return (
         <>
-            <Grid2 display="flex" flexDirection="column" rowGap='10px'>
-                {tournaments.map((key) => (
+            <Grid2 display="flex" flexDirection="column" rowGap="10px">
+                {leagues && tournaments.map((key) => (
                     <TournamentListItem
                         name={key.name}
                         matches={leagues[key.codeName]}

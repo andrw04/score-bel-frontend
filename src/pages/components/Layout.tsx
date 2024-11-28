@@ -8,6 +8,7 @@ import {
 import React, { FC } from 'react'
 import { NavBar } from './NavBar/NavBar'
 import { CustomBox } from './common/CustomBox'
+import News from './News/News'
 
 const darkTheme = createTheme({
     palette: {
@@ -41,7 +42,7 @@ export const Layout: FC<PropsType> = ({ children }) => {
                         {children}
                     </CustomBox>
                     <CustomBox width="30%">
-                        <Box />
+                        <News/>
                     </CustomBox>
                 </Grid2>
             </CssBaseline>

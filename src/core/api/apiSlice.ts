@@ -11,10 +11,7 @@ export const apiSlice = createApi({
 
             const accessToken = localStorage.getItem(SCORE_BEL_ACCESS)
 
-            console.log('accessToken', accessToken)
-
             if (accessToken) {
-                console.log('set Authorization', accessToken)
                 headers.set('Authorization', `Bearer ${accessToken}`)
             }
 
