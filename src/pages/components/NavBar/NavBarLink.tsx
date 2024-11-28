@@ -23,7 +23,7 @@ export const NavBarLink: FC<PropsType & LinkProps> = ({ icon, title, to }) => {
 
   return (
     <Grid2>
-      <GoogleFonts href="https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,1..1000;1,1..1000&display=swap" />
+      {/* <GoogleFonts href="https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,1..1000;1,1..1000&display=swap" /> */}
       <Link
         style={{
           textDecoration: "none",
@@ -34,7 +34,7 @@ export const NavBarLink: FC<PropsType & LinkProps> = ({ icon, title, to }) => {
       >
         <Typography
           color={getLinkColor(isHovered, !!match)}
-          fontFamily="Sofia Sans, sans-serif"
+          // fontFamily="Sofia Sans, sans-serif"
           fontWeight="700"
           fontSize="20px"
           lineHeight="24px"

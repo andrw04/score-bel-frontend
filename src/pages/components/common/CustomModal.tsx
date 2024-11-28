@@ -1,6 +1,6 @@
-import { Backdrop, Modal } from "@mui/material";
-import { FC, ReactNode } from "react";
-import { CustomBox } from "./CustomBox";
+import {Modal} from '@mui/material';
+import {FC, ReactNode} from 'react';
+import {CustomBox} from './CustomBox';
 
 type PropsType = {
   children: ReactNode;
@@ -20,7 +20,7 @@ export const CustomModal: FC<PropsType> = ({ children, onClose }) => {
         height: "100vh",
       }}
     >
-      <CustomBox width="400px" p="50px 30px">
+      <CustomBox width="400px" sx={{ padding: "50px 30px" }}>
         {children}
       </CustomBox>
     </Modal>
