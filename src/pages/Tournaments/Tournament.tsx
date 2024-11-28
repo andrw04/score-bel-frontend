@@ -12,6 +12,8 @@ const getLeagueName = (codeName: string | undefined) => {
             return 'Высшая Лига'
         case '1-league':
             return 'Первая Лига'
+        case '2-league':
+            return 'Вторая Лига'
         default:
             return ''
     }

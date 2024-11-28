@@ -8,9 +8,9 @@ export const matchesApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getMatches: builder.query<
             PageResponseType<Match>,
-            { fullTime?: boolean; tournament?: string }
+            { fullTime?: boolean; tournament?: string, date?: string }
         >({
-            query: ({ fullTime, tournament } = {}) => {
+            query: ({ fullTime, tournament, date } = {}) => {
                 const queryParams = new URLSearchParams()
 
                 if (fullTime !== undefined) {
@@ -19,6 +19,10 @@ export const matchesApi = apiSlice.injectEndpoints({
 
                 if (tournament !== undefined) {
                     queryParams.append('tournament', tournament)
+                }
+
+                if (date !== undefined) {
+                    queryParams.append('date', date)
                 }
 
                 return `${SCORE_BEL_MATCHES}/?${queryParams.toString()}`

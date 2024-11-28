@@ -1,9 +1,7 @@
-import { Grid, Grid2, Paper, Typography } from '@mui/material'
+import { Grid2, Paper, Typography } from '@mui/material'
 import { MatchCard } from './MatchCard'
 import { Match } from '../../../core/types/matchesTypes'
-import { useGetTeamsQuery } from '../../../core/api/teamsApi'
-import { useMemo } from 'react'
-import _, { Dictionary, keyBy } from 'lodash'
+import _, { Dictionary } from 'lodash'
 import { Team } from '../../../core/types/teamTypes'
 
 type PropsType = {
@@ -19,7 +17,7 @@ const TournamentListItem: React.FC<PropsType> = ({ name, matches, teams }) => {
                 {name}
             </Typography>
             <Grid2 container spacing={2}>
-                {matches.map((match) => (
+                {matches && matches.map((match) => (
                     <MatchCard match={match} teams={teams}/>
                 ))}
             </Grid2>

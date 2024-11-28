@@ -31,7 +31,6 @@ export const authSlice = createSlice({
             state.access = action.payload.access
         },
         setUser: (state, action: PayloadAction<{ username: string }>) => {
-            console.log('setUser', action.payload.username)
             localStorage.setItem(
                 'user',
                 JSON.stringify({
@@ -41,7 +40,6 @@ export const authSlice = createSlice({
             state.username = action.payload.username
         },
         removeTokens: (state) => {
-            console.log('logout')
             localStorage.removeItem(SCORE_BEL_ACCESS)
             localStorage.removeItem(SCORE_BEL_REFRESH)
         },

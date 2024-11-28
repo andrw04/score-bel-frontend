@@ -4,12 +4,13 @@ import { FC } from 'react'
 type PropsType = {
     homeTeamScore: number
     awayTeamScore: number
+    isStarted: boolean
 }
 
-const Result: FC<PropsType> = ({ homeTeamScore, awayTeamScore }) => {
+const Result: FC<PropsType> = ({ homeTeamScore, awayTeamScore, isStarted }) => {
     return (
         <Typography fontSize='48px'>
-            {homeTeamScore} - {awayTeamScore}
+            {isStarted ? `${homeTeamScore} - ${awayTeamScore}` : 'Н/Д' }
         </Typography>
     )
 }
