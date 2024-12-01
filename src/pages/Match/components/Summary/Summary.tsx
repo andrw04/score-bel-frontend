@@ -4,6 +4,8 @@ import { Match, MatchEvent } from '../../../../core/types/matchesTypes'
 import Preloader from '../../../components/common/Preloader'
 import { Stack } from '@mui/material'
 import Event from './Event'
+import camelcaseKeys from 'camelcase-keys'
+import { camelCase } from 'lodash'
 
 type PropsType = {
     matchId: string
@@ -14,12 +16,14 @@ type PropsType = {
 const Summary: FC<PropsType> = ({ matchId, homeTeamName, awayTeamName }) => {
     const { data, isLoading } = useGetMatchSummaryByIdQuery(matchId)
 
+    console.log(homeTeamName)
+
     const homeTeam = useMemo(() => {
         if (data === undefined) {
             return []
         }
 
-        return data[homeTeamName.toLowerCase()]
+        return data[camelCase(homeTeamName)]
     }, [data])
 
     const awayTeam = useMemo(() => {
@@ -27,7 +31,7 @@ const Summary: FC<PropsType> = ({ matchId, homeTeamName, awayTeamName }) => {
             return []
         }
 
-        return data[awayTeamName.toLowerCase()]
+        return data[camelCase(awayTeamName)]
     }, [data])
 
     const events = useMemo(() => {

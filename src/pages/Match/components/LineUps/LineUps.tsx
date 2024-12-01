@@ -4,6 +4,7 @@ import Preloader from '../../../components/common/Preloader'
 import { Match } from '../../../../core/types/matchesTypes'
 import { Grid2, Stack, Typography } from '@mui/material'
 import PlayerItem from './PlayerItem'
+import { camelCase } from 'lodash'
 
 type PropsType = {
     matchId: string
@@ -23,7 +24,7 @@ const LineUps: FC<PropsType> = ({ matchId, homeTeamName, awayTeamName }) => {
             }
         }
 
-        return data[homeTeamName.toLowerCase()]
+        return data[camelCase(homeTeamName)]
     }, [data])
 
     const awayTeam = useMemo(() => {
@@ -34,7 +35,7 @@ const LineUps: FC<PropsType> = ({ matchId, homeTeamName, awayTeamName }) => {
             }
         }
 
-        return data[awayTeamName.toLowerCase()]
+        return data[camelCase(awayTeamName)]
     }, [data])
 
     return (
