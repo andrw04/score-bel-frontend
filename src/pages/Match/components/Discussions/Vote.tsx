@@ -1,75 +1,186 @@
-import { Box, Grid2, PaperProps, Typography } from "@mui/material";
-import { useState } from "react";
+import {
+    Alert,
+    Box,
+    Button,
+    Grid2,
+    Snackbar,
+    Stack,
+    Typography,
+} from '@mui/material'
+import { useMemo, useState } from 'react'
+import { Match } from '../../../../core/types/matchesTypes'
+import {
+    useGetMatchVotesQuery,
+    useVoteForMatchMutation,
+} from '../../../../core/api/matchesApi'
+import Preloader from '../../../components/common/Preloader'
+import { useSelector } from 'react-redux'
 
 type PropsType = {
+    match: Match
     homeTeam: string
     awayTeam: string
 }
 
-const Vote: React.FC<PropsType> = ({ homeTeam, awayTeam }) => {
-    const [votesA, setVotesA] = useState(0);
-    const [votesB, setVotesB] = useState(0);
-  
-    const totalVotes = votesA + votesB;
-  
-    const handleVoteA = () => {
-      setVotesA((prev) => prev + 1);
-    };
-  
-    const handleVoteB = () => {
-      setVotesB((prev) => prev + 1);
-    };
-  
-    const getPercentage = (votes: number) => {
-      return totalVotes === 0 ? 0 : Math.round((votes / totalVotes) * 100);
-    };
-  
+const Vote: React.FC<PropsType> = ({ match, homeTeam, awayTeam }) => {
+    const isAuthenticated = useSelector(
+        (state: any) => state.auth.isAuthenticated
+    )
+
+    const { data, isLoading } = useGetMatchVotesQuery(match.id)
+    const [voteForMatch, { isError, isSuccess }] = useVoteForMatchMutation()
+
+    const votes = useMemo(() => {
+        if (!data) {
+            return {
+                homeWin: 0,
+                awayWin: 0,
+                draw: 0,
+            }
+        }
+
+        return data
+    }, [data])
+
+    const handleVote = async (choice: 'home_win' | 'away_win' | 'draw') => {
+        try {
+            await voteForMatch({
+                id: match.id,
+                body: {
+                    choice,
+                },
+            })
+        } catch (error) {
+            console.error('Error:', error)
+        }
+
+        setShowSnackbar(true)
+    }
+
+    const [showSnackbar, setShowSnackbar] = useState(false)
+
+    const handleCloseSnackbar = () => {
+        setShowSnackbar(false)
+    }
+
     return (
-      <Grid2 style={{ width: '100%', margin: '0 auto', fontFamily: 'Arial, sans-serif' }}>
-        <Typography variant="h5">Голосование за результат матча</Typography>
-        <Box>
-          <button onClick={handleVoteA} style={{ marginRight: '10px' }}>
-            {homeTeam}
-          </button>
-          <button onClick={handleVoteB}>{awayTeam}</button>
-        </Box>
-        <Box style={{ marginTop: '20px' }}>
-          <Box
-            style={{
-              display: 'flex',
-              width: '100%',
-              height: '5px',
-              backgroundColor: '#e0e0e0',
-              borderRadius: '10px',
-              overflow: 'hidden',
-            }}
-          >
-            <Box
-              style={{
-                width: `${getPercentage(votesA)}%`,
-                height: '5px',
-                backgroundColor: 'background.paper',
-                transition: 'width 0.3s ease',
-              }}
-            />
-            <Box
-              style={{
-                width: `${getPercentage(votesB)}%`,
-                height: '5px',
-                backgroundColor: '#C3CC5A',
-                transition: 'width 0.3s ease',
-              }}
-            />
-          </Box>
-          <div style={{ marginTop: '10px', textAlign: 'center' }}>
-            <strong>{homeTeam}:</strong> {votesA} votes ({getPercentage(votesA)}%) | <strong>{awayTeam}:</strong> {votesB} votes ({getPercentage(votesB)}%)
-          </div>
-          <Box style={{ marginTop: '10px', textAlign: 'center' }}>
-            <strong>Total votes:</strong> {totalVotes}
-          </Box>
-        </Box>
-      </Grid2>
-    );
-  };
-  
-  export default Vote;
+        <>
+            {isLoading && <Preloader />}
+            <Snackbar
+                open={showSnackbar}
+                autoHideDuration={3000}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            >
+                <Alert
+                    onClose={handleCloseSnackbar}
+                    severity={isSuccess ? 'success' : 'error'}
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                >
+                    {isSuccess ? "You've voted" : 'Error'}
+                </Alert>
+            </Snackbar>
+            <Stack
+                style={{
+                    width: '100%',
+                    margin: '0 auto',
+                    fontFamily: 'Arial, sans-serif',
+                }}
+                gap="10px"
+            >
+                <Typography variant="h5">
+                    Голосование за результат матча
+                </Typography>
+                <Stack justifyContent="center" display="flex" gap="10px">
+                    <Stack gap="10px">
+                        <Box
+                            style={{
+                                display: 'flex',
+                                width: '100%',
+                                height: '10px',
+                                backgroundColor: '#e0e0e0',
+                                borderRadius: '10px',
+                                overflow: 'hidden',
+                            }}
+                        >
+                            <Box
+                                style={{
+                                    width: `${votes.homeWin}%`,
+                                    height: '10px',
+                                    backgroundColor: 'green',
+                                    transition: 'width 0.3s ease',
+                                }}
+                            />
+                            <Box
+                                style={{
+                                    width: `${votes.draw}%`,
+                                    height: '10px',
+                                    backgroundColor: 'yellow',
+                                    transition: 'width 0.3s ease',
+                                }}
+                            />
+                            <Box
+                                style={{
+                                    width: `${votes.awayWin}%`,
+                                    height: '10px',
+                                    backgroundColor: 'red',
+                                    transition: 'width 0.3s ease',
+                                }}
+                            />
+                        </Box>
+                        <Grid2 display="flex" justifyContent="space-between">
+                            <Typography fontSize="14px">
+                                <strong>{homeTeam}:</strong>{' '}
+                                {votes.homeWin.toPrecision(3)}%{' '}
+                            </Typography>
+                            <Typography fontSize="14px">
+                                <strong>Ничья:</strong>{' '}
+                                {votes.draw.toPrecision(3)}%{' '}
+                            </Typography>
+                            <Typography fontSize="14px">
+                                <strong>{awayTeam}:</strong>{' '}
+                                {votes.awayWin.toPrecision(3)}%{' '}
+                            </Typography>
+                        </Grid2>
+                    </Stack>
+                    {isAuthenticated && (
+                        <Grid2
+                            display="flex"
+                            width="100%"
+                            justifyContent="space-between"
+                            gap="10px"
+                        >
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                color="inherit"
+                                onClick={() => handleVote('home_win')}
+                            >
+                                {homeTeam}
+                            </Button>
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                color="inherit"
+                                onClick={() => handleVote('draw')}
+                            >
+                                Ничья
+                            </Button>
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                color="inherit"
+                                onClick={() => handleVote('away_win')}
+                            >
+                                {awayTeam}
+                            </Button>
+                        </Grid2>
+                    )}
+                </Stack>
+            </Stack>
+        </>
+    )
+}
+
+export default Vote

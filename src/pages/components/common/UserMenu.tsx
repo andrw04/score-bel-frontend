@@ -13,9 +13,42 @@ import SignInForm from '../../SignIn/SignInForm'
 import SignUpForm from '../../SignUp/SignUpForm'
 import { SCORE_BEL_ACCESS } from '../../../core/constants/api'
 import { useAppDispatch } from '../../../core/store/store'
-import { removeTokens } from '../../../core/store/authSlice'
+import {
+    AuthState,
+    removeTokens,
+    setTokens,
+} from '../../../core/store/authSlice'
+import { useSelector } from 'react-redux'
+import { jwtDecode } from 'jwt-decode'
+import { isValid } from 'date-fns'
+
+const isValidToken = (token: string) => {
+    try {
+        const decoded = jwtDecode(token)
+
+        if (!decoded.exp) {
+            return false
+        }
+
+        return decoded.exp > Date.now() / 1000
+    } catch (error) {
+        return false
+    }
+}
 
 export const UserMenu = () => {
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        const storedToken = localStorage.getItem(SCORE_BEL_ACCESS)
+        if (storedToken && isValidToken(storedToken)) {
+            dispatch(setTokens({ access: storedToken, refresh: '' }))
+        }
+        else {
+            dispatch(removeTokens())
+        }
+    }, [dispatch])
+
     const [showSignUp, setShowSignUp] = useState(false)
     const [showSignIn, setShowSignIn] = useState(false)
 
@@ -23,12 +56,12 @@ export const UserMenu = () => {
 
     const [username, setUsername] = useState('')
 
-    const dispatch = useAppDispatch()
-
-    const token = localStorage.getItem(SCORE_BEL_ACCESS)
+    const isAuthenticated = useSelector(
+        (state : any) => state.auth.isAuthenticated
+    )
 
     const { data: userProfile, isLoading } = useGetUserProfileQuery(undefined, {
-        skip: !token,
+        skip: !isAuthenticated,
     })
 
     useEffect(() => {

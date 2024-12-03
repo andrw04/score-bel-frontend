@@ -3,7 +3,7 @@ import { BASE_API_URL, SCORE_BEL_ACCESS, TagTypes } from '../constants/api'
 
 export const apiSlice = createApi({
     reducerPath: 'apiSlice',
-    tagTypes: [TagTypes.USER],
+    tagTypes: [TagTypes.VOTE],
     baseQuery: fetchBaseQuery({
         baseUrl: BASE_API_URL,
         prepareHeaders: (headers, { getState }) => {

@@ -14,7 +14,6 @@ export const authApi = apiSlice.injectEndpoints({
                     body: JSON.stringify(body),
                 }
             },
-            invalidatesTags: [TagTypes.USER],
         }),
         signUp: builder.mutation<
             { access: string; refresh: string },
@@ -35,7 +34,6 @@ export const authApi = apiSlice.injectEndpoints({
                     method: 'GET',
                 }
             },
-            providesTags: [TagTypes.USER],
         }),
     }),
     overrideExisting: false,

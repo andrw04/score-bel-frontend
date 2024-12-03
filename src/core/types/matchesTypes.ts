@@ -37,3 +37,16 @@ export type MatchEvent = {
 export type MatchSummary = {
     [teamName: string]: MatchEvent[]
 }
+
+export type MatchVotes = {
+    homeWin: number
+    awayWin: number
+    draw: number
+}
+
+export type VoteForMatch = {
+    id: string
+    body: {
+        choice: 'home_win' | 'away_win' | 'draw'
+    }
+}

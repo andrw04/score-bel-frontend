@@ -1,14 +1,20 @@
 import camelcaseKeys from 'camelcase-keys'
-import { SCORE_BEL_MATCHES } from '../constants/api'
+import { SCORE_BEL_MATCHES, TagTypes } from '../constants/api'
 import { apiSlice } from './apiSlice'
-import { LineUp, Match, MatchSummary } from '../types/matchesTypes'
+import {
+    LineUp,
+    Match,
+    MatchSummary,
+    MatchVotes,
+    VoteForMatch,
+} from '../types/matchesTypes'
 import { PageResponseType } from '../types/common'
 
 export const matchesApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getMatches: builder.query<
             PageResponseType<Match>,
-            { fullTime?: boolean; tournament?: string, date?: string }
+            { fullTime?: boolean; tournament?: string; date?: string }
         >({
             query: ({ fullTime, tournament, date } = {}) => {
                 const queryParams = new URLSearchParams()
@@ -45,6 +51,20 @@ export const matchesApi = apiSlice.injectEndpoints({
             transformResponse: (response: any) =>
                 camelcaseKeys(response, { deep: true }),
         }),
+        getMatchVotes: builder.query<MatchVotes, string>({
+            query: (id) => `${SCORE_BEL_MATCHES}/${id}/poll/`,
+            transformResponse: (response: any) =>
+                camelcaseKeys(response, { deep: true }),
+            providesTags: [TagTypes.VOTE]
+        }),
+        voteForMatch: builder.mutation<void, VoteForMatch>({
+            query: ({ id, body }) => ({
+                url: `${SCORE_BEL_MATCHES}/${id}/vote/`,
+                method: 'POST',
+                body,
+            }),
+            invalidatesTags: [TagTypes.VOTE]
+        }),
     }),
     overrideExisting: false,
 })
@@ -54,4 +74,6 @@ export const {
     useGetMatchByIdQuery,
     useGetMatchLineUpByIdQuery,
     useGetMatchSummaryByIdQuery,
+    useGetMatchVotesQuery,
+    useVoteForMatchMutation,
 } = matchesApi

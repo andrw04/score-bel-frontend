@@ -9,6 +9,7 @@ export const SCORE_BEL_ACCESS = 'score-bel-access'
 export const SCORE_BEL_REFRESH = 'score-bel-refresh'
 export enum TagTypes {
     USER = 'USER',
+    VOTE = 'VOTE',
 }
 
 export const SCORE_BEL_TOURNAMENTS = `${BASE_API_URL}/tournaments`

@@ -29,6 +29,8 @@ export const authSlice = createSlice({
 
             state.refresh = action.payload.refresh
             state.access = action.payload.access
+
+            state.isAuthenticated = true
         },
         setUser: (state, action: PayloadAction<{ username: string }>) => {
             localStorage.setItem(
@@ -42,6 +44,7 @@ export const authSlice = createSlice({
         removeTokens: (state) => {
             localStorage.removeItem(SCORE_BEL_ACCESS)
             localStorage.removeItem(SCORE_BEL_REFRESH)
+            state.isAuthenticated = false
         },
     },
 })

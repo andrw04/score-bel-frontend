@@ -81,8 +81,15 @@ const MatchDetails: FC<PropsType> = () => {
                                 ]}
                             />
                         </TabPanel>
-                        <TabPanel value="4" sx={{ height: '100%', padding: '0px' }}>
-                            <Discussions/>
+                        <TabPanel
+                            value="4"
+                            sx={{ height: '100%', padding: '0px' }}
+                        >
+                            <Discussions
+                                match={match}
+                                homeTeamName={teams[match.homeTeam].name}
+                                awayTeamName={teams[match.awayTeam].name}
+                            />
                         </TabPanel>
                     </TabContext>
                 </Stack>
