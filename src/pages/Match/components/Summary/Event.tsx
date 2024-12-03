@@ -9,8 +9,6 @@ const getEventComponent = (
     event: MatchEvent,
     flexDirection: 'row' | 'row-reverse'
 ) => {
-    console.log('event', event)
-
     if (event.action === 'goal') {
         return (
             <Goal

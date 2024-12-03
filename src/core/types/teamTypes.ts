@@ -10,4 +10,5 @@ export type Team = {
     goalsDiff: number
     points: number
     tournament: string
+    logo: string
 }

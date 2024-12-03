@@ -2,11 +2,14 @@ import { FC } from 'react'
 import { Team } from '../../../core/types/teamTypes'
 import { Grid2 } from '@mui/material'
 
+const defaultLogo = 'https://official-flc.com/img/default-club-picture.png'
+
 type PropsType = {
     team: string
+    logo?: string
 }
 
-const TeamView: FC<PropsType> = ({ team }) => {
+const TeamView: FC<PropsType> = ({ team, logo }) => {
     return (
         <Grid2
             display="flex"
@@ -18,8 +21,9 @@ const TeamView: FC<PropsType> = ({ team }) => {
 
         >
             <img
-                src={`https://official-flc.com/img/default-club-picture.png`}
-                width="50"
+                src={logo ?? defaultLogo}
+                width="80px"
+                height="80px"
                 alt={`${team}`}
             />
             <span>{team}</span>

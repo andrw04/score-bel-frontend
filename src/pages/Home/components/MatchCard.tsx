@@ -1,9 +1,4 @@
-import {
-    Grid2,
-    IconButton,
-    Paper,
-    Typography,
-} from '@mui/material'
+import { Grid2, IconButton, Paper, Typography } from '@mui/material'
 import { Match } from '../../../core/types/matchesTypes'
 import TeamView from './TeamView'
 import Result from './Result'
@@ -45,7 +40,10 @@ export const MatchCard: React.FC<PropsType> = ({ match, teams, onClick }) => {
                 }}
             >
                 <Grid2 display="flex" flexDirection="row" gap="20px">
-                    <TeamView team={teams[match.homeTeam]?.name} />
+                    <TeamView
+                        team={teams[match.homeTeam]?.name}
+                        logo={teams[match.homeTeam]?.logo}
+                    />
                     <Grid2
                         display="flex"
                         flexDirection="column"
@@ -60,7 +58,10 @@ export const MatchCard: React.FC<PropsType> = ({ match, teams, onClick }) => {
 
                         <Typography>{formattedTime}</Typography>
                     </Grid2>
-                    <TeamView team={teams[match.awayTeam]?.name} />
+                    <TeamView
+                        team={teams[match.awayTeam]?.name}
+                        logo={teams[match.awayTeam]?.logo}
+                    />
                 </Grid2>
             </Paper>
         </IconButton>

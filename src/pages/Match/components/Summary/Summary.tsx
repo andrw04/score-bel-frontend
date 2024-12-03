@@ -16,8 +16,6 @@ type PropsType = {
 const Summary: FC<PropsType> = ({ matchId, homeTeamName, awayTeamName }) => {
     const { data, isLoading } = useGetMatchSummaryByIdQuery(matchId)
 
-    console.log(homeTeamName)
-
     const homeTeam = useMemo(() => {
         if (data === undefined) {
             return []

@@ -10,6 +10,7 @@ import TournamentTable from '../Tournaments/components/TournamentTable'
 import Preloader from '../components/common/Preloader'
 import LineUps from './components/LineUps/LineUps'
 import Summary from './components/Summary/Summary'
+import Discussions from './components/Discussions/Discussions'
 
 type PropsType = {}
 
@@ -45,6 +46,7 @@ const MatchDetails: FC<PropsType> = () => {
                                 <Tab label="События" value="1" />
                                 <Tab label="Составы" value="2" />
                                 <Tab label="Таблица" value="3" />
+                                <Tab label="Обсуждение" value="4" />
                             </TabList>
                         </Box>
                         <TabPanel
@@ -78,6 +80,9 @@ const MatchDetails: FC<PropsType> = () => {
                                     match.awayTeam,
                                 ]}
                             />
+                        </TabPanel>
+                        <TabPanel value="4" sx={{ height: '100%', padding: '0px' }}>
+                            <Discussions/>
                         </TabPanel>
                     </TabContext>
                 </Stack>
