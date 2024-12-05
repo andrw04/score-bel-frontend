@@ -4,8 +4,10 @@ import { apiSlice } from './apiSlice'
 import {
     LineUp,
     Match,
+    MatchDiscussionMessage,
     MatchSummary,
     MatchVotes,
+    SendMessage,
     VoteForMatch,
 } from '../types/matchesTypes'
 import { PageResponseType } from '../types/common'
@@ -55,15 +57,32 @@ export const matchesApi = apiSlice.injectEndpoints({
             query: (id) => `${SCORE_BEL_MATCHES}/${id}/poll/`,
             transformResponse: (response: any) =>
                 camelcaseKeys(response, { deep: true }),
-            providesTags: [TagTypes.VOTE]
+            providesTags: [TagTypes.VOTE],
         }),
         voteForMatch: builder.mutation<void, VoteForMatch>({
-            query: ({ id, body }) => ({
-                url: `${SCORE_BEL_MATCHES}/${id}/vote/`,
+            query: ({ matchId, body }) => ({
+                url: `${SCORE_BEL_MATCHES}/${matchId}/vote/`,
                 method: 'POST',
                 body,
             }),
-            invalidatesTags: [TagTypes.VOTE]
+            invalidatesTags: [TagTypes.VOTE],
+        }),
+        getMatchDiscussionMessages: builder.query<
+            MatchDiscussionMessage[],
+            string
+        >({
+            query: (id) => `${SCORE_BEL_MATCHES}/${id}/discussion-messages/`,
+            transformResponse: (response: any) =>
+                camelcaseKeys(response, { deep: true }),
+            providesTags: [TagTypes.CHAT]
+        }),
+        sendDiscussionMessage: builder.mutation<void, SendMessage>({
+            query: ({ matchId, body }) => ({
+                url: `${SCORE_BEL_MATCHES}/${matchId}/message/`,
+                method: 'POST',
+                body,
+            }),
+            invalidatesTags: [TagTypes.CHAT]
         }),
     }),
     overrideExisting: false,
@@ -76,4 +95,6 @@ export const {
     useGetMatchSummaryByIdQuery,
     useGetMatchVotesQuery,
     useVoteForMatchMutation,
+    useGetMatchDiscussionMessagesQuery,
+    useSendDiscussionMessageMutation,
 } = matchesApi

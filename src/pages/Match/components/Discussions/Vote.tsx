@@ -45,7 +45,7 @@ const Vote: React.FC<PropsType> = ({ match, homeTeam, awayTeam }) => {
     const handleVote = async (choice: 'home_win' | 'away_win' | 'draw') => {
         try {
             await voteForMatch({
-                id: match.id,
+                matchId: match.id,
                 body: {
                     choice,
                 },

@@ -17,24 +17,10 @@ import {
     AuthState,
     removeTokens,
     setTokens,
+    setUser,
 } from '../../../core/store/authSlice'
 import { useSelector } from 'react-redux'
-import { jwtDecode } from 'jwt-decode'
-import { isValid } from 'date-fns'
-
-const isValidToken = (token: string) => {
-    try {
-        const decoded = jwtDecode(token)
-
-        if (!decoded.exp) {
-            return false
-        }
-
-        return decoded.exp > Date.now() / 1000
-    } catch (error) {
-        return false
-    }
-}
+import { isValidToken } from '../../../core/helpers/authHelpers'
 
 export const UserMenu = () => {
     const dispatch = useAppDispatch()
@@ -43,8 +29,7 @@ export const UserMenu = () => {
         const storedToken = localStorage.getItem(SCORE_BEL_ACCESS)
         if (storedToken && isValidToken(storedToken)) {
             dispatch(setTokens({ access: storedToken, refresh: '' }))
-        }
-        else {
+        } else {
             dispatch(removeTokens())
         }
     }, [dispatch])
@@ -57,7 +42,7 @@ export const UserMenu = () => {
     const [username, setUsername] = useState('')
 
     const isAuthenticated = useSelector(
-        (state : any) => state.auth.isAuthenticated
+        (state: any) => state.auth.isAuthenticated
     )
 
     const { data: userProfile, isLoading } = useGetUserProfileQuery(undefined, {
@@ -67,6 +52,7 @@ export const UserMenu = () => {
     useEffect(() => {
         if (userProfile) {
             setUsername(userProfile.username)
+            dispatch(setUser({ username: userProfile.username }))
             setShowSnackbar(true)
         }
     }, [userProfile])

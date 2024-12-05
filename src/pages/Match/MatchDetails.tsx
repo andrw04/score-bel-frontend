@@ -38,7 +38,7 @@ const MatchDetails: FC<PropsType> = () => {
         <>
             {isLoading && <Preloader />}
             {match && teams !== undefined && (
-                <Stack>
+                <Stack height='100%'>
                     <MatchCard match={match!} teams={teams} />
                     <TabContext value={value}>
                         <Box>

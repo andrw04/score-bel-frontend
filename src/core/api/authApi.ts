@@ -35,9 +35,20 @@ export const authApi = apiSlice.injectEndpoints({
                 }
             },
         }),
+        refreshToken: builder.mutation<{ refresh: string }, string>({
+            query: (refreshToken) => ({
+                url: 'user/refresh-token',
+                method: 'POST',
+                body: { refreshToken },
+            }),
+        }),
     }),
     overrideExisting: false,
 })
 
-export const { useSignInMutation, useSignUpMutation, useGetUserProfileQuery } =
-    authApi
+export const {
+    useSignInMutation,
+    useSignUpMutation,
+    useGetUserProfileQuery,
+    useRefreshTokenMutation,
+} = authApi
