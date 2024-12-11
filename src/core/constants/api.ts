@@ -1,4 +1,4 @@
-export const BASE_API_URL = 'http://localhost:8000/api/internal/v1'
+export const BASE_API_URL = 'http://3.8.100.34:8000/api/internal/v1'
 
 export const USER_PROFILE_URL = `${BASE_API_URL}/user/profile`
 
