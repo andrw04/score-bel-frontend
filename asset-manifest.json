@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/score-bel-frontend/static/js/main.64f6fcd3.js",
+    "index.html": "/score-bel-frontend/index.html",
+    "main.64f6fcd3.js.map": "/score-bel-frontend/static/js/main.64f6fcd3.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.64f6fcd3.js"
+  ]
+}
